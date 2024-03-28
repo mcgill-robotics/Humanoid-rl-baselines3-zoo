@@ -26,7 +26,7 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
     max_grad_norm = trial.suggest_categorical("max_grad_norm", [0.3, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 5])
     vf_coef = trial.suggest_float("vf_coef", 0, 1)
     # net_arch_type = trial.suggest_categorical("net_arch", ["tiny", "small", "medium"])
-    net_arch_type = trial.suggest_categorical("net_arch", ["medium", "large"])
+    # net_arch_type = trial.suggest_categorical("net_arch", ["medium", "large"])
     # Uncomment for gSDE (continuous actions)
     log_std_init = trial.suggest_float("log_std_init", -4, 1)
     # Uncomment for gSDE (continuous action)
@@ -48,12 +48,12 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
 
     # Independent networks usually work best
     # when not working with images
-    net_arch = {
-        # "tiny": dict(pi=[64], vf=[64]),
-        # "small": dict(pi=[64, 64], vf=[64, 64]),
-        "medium": dict(pi=[256, 256], vf=[256, 256]),
-        "large": dict(pi=[256, 256, 256], vf=[256, 256, 256]),
-    }[net_arch_type]
+    # net_arch = {
+    #     # "tiny": dict(pi=[64], vf=[64]),
+    #     # "small": dict(pi=[64, 64], vf=[64, 64]),
+    #     "medium": dict(pi=[256, 256], vf=[256, 256]),
+    #     "large": dict(pi=[256, 256, 256], vf=[256, 256, 256]),
+    # }[net_arch_type]
 
     activation_fn = {"tanh": nn.Tanh, "relu": nn.ReLU, "elu": nn.ELU, "leaky_relu": nn.LeakyReLU}[activation_fn_name]
 
@@ -71,7 +71,7 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
         "sde_sample_freq": sde_sample_freq,
         "policy_kwargs": dict(
             log_std_init=log_std_init,
-            net_arch=net_arch,
+            net_arch=dict(pi=[256, 256, 256], vf=[256, 256, 256]),
             activation_fn=activation_fn,
             ortho_init=ortho_init,
         ),
