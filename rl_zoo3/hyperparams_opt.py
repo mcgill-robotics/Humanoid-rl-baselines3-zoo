@@ -74,6 +74,7 @@ def sample_ppo_params(trial: optuna.Trial, n_actions: int, n_envs: int, addition
             net_arch=dict(pi=[256, 256, 256], vf=[256, 256, 256]),
             activation_fn=activation_fn,
             ortho_init=ortho_init,
+            use_expln=True
         ),
     }
 
